@@ -1,0 +1,29 @@
+options:
+    p: &e&lSUNUCU &8» &r
+    yetki: skript.kick
+    yetki-mesaj: &cBu komutu kullanmak için gerekli yetkiye sahip değilsin!
+
+command /uzaklaştır [<player>] [<text>]:
+    aliases: /uzaklastir
+    permission: {@yetki}
+    permission message: {@yetki-mesaj}
+    trigger:
+        if arg-1 is not set:
+            send "{@p}&7Kullanım: &e/uzaklaştır <oyuncu> <sebep>" to player
+            stop
+            
+        if arg-2 is not set:
+            send "{@p}&7Lütfen bir uzaklaştırma sebebi giriniz!" to player
+            stop
+            
+        if arg-1 is online:
+            kick arg-1 because "%nl%&4&lUzaklaştırıldın!%nl%%nl%&7Uzaklaştıran Yetkili: &e%player%%nl%&7Uzaklaştırma Sebebi: &c%arg-2%%nl%%nl%&fEğer bir hata olduğunu düşünüyorsan Discord'dan bildir."
+            
+            broadcast "{@p}&c%arg-1% &7isimli oyuncu, &e%player% &7tarafından &c%arg-2% &7sebebiyle sunucudan uzaklaştırıldı!"
+        else:
+            send "{@p}&cBelirtilen oyuncu şu anda aktif değil." to player
+
+on tab complete of "/uzaklaştır" or "/uzaklastir":
+    set {_players::*} to all players
+    loop {_players::*}:
+        add loop-value to completions
